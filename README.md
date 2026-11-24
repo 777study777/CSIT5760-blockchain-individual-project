@@ -7,6 +7,7 @@
 - **Course:** CSIT5760 Blockchain and Smart Contracts (2026–27), individual project
 - **Target network:** Sepolia, chain ID 11155111
 - **Main contract:** [`contracts/AuctionHouse.sol`](contracts/AuctionHouse.sol)
+- **Proposal:** [`docs/proposal.pdf`](docs/proposal.pdf) (submitted 8 November 2026)
 
 ## Abstract
 
