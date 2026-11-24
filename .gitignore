@@ -1,0 +1,14 @@
+node_modules/
+.env
+.env.*
+!.env.example
+artifacts/
+cache/
+coverage/
+coverage.json
+typechain-types/
+.DS_Store
+npm-debug.log*
+yarn-error.log*
+deployments/deployment-hardhat.json
+deployments/deployment-localhost.json
