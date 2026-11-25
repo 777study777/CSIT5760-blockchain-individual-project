@@ -152,14 +152,18 @@ npx hardhat verify --network sepolia <MockNFT address>
 | Item | Value |
 | --- | --- |
 | Network / chain ID | Sepolia / 11155111 |
-| AuctionHouse address | _pending_ |
-| MockNFT address | _pending_ |
-| Deployer | _pending_ |
-| Tx hash + block (AuctionHouse) | _pending_ |
+| AuctionHouse address | [`0xE798321320bf13801C1F4301b3F2CDD81F531b43`](https://sepolia.etherscan.io/address/0xE798321320bf13801C1F4301b3F2CDD81F531b43) |
+| MockNFT address | [`0xfb40fF5c177C7d6eD4Ee823e0C1dF92e171cE007`](https://sepolia.etherscan.io/address/0xfb40fF5c177C7d6eD4Ee823e0C1dF92e171cE007) |
+| Deployer | [`0xEcC27F84CDeD713e8eebe9320Fe8aDeFB2dCa5bE`](https://sepolia.etherscan.io/address/0xEcC27F84CDeD713e8eebe9320Fe8aDeFB2dCa5bE) |
+| Tx hash + block (AuctionHouse) | `0xb80b57725b67963bd3c51e3b31615106324c79c0408a4f571a10dd8cdb0b115b` / 12209032 |
+| Tx hash + block (MockNFT) | `0xcbf1695bb6141ea6601daa9dc6842a2af1246608dc3fbbf95d598384862d13e8` / 12209031 |
+| Deployed at | 2026-11-25 18:42 HKT, source commit `2b5a12c` |
 | Compiler / optimizer / EVM | 0.8.24 / enabled, 200 runs / cancun |
 | Deploy tool | Hardhat 2.29.1 |
-| Etherscan (AuctionHouse) | _pending_ |
-| Etherscan (MockNFT) | _pending_ |
+| Etherscan (AuctionHouse) | [verified](https://sepolia.etherscan.io/address/0xE798321320bf13801C1F4301b3F2CDD81F531b43#code) |
+| Etherscan (MockNFT) | [verified](https://sepolia.etherscan.io/address/0xfb40fF5c177C7d6eD4Ee823e0C1dF92e171cE007#code) |
+
+Machine-readable copy: [`deployments/deployment-sepolia.json`](deployments/deployment-sepolia.json).
 
 ## 9. External code and exact versions
 

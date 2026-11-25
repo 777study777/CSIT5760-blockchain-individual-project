@@ -1,0 +1,33 @@
+{
+  "project": "SealedBid",
+  "network": "sepolia",
+  "chainId": 11155111,
+  "deployedAt": "2026-11-25T10:42:02.234Z",
+  "gitCommit": "2b5a12ca4729510c7f8f12fe9c77caa1f0fb68a2",
+  "deployer": "0xEcC27F84CDeD713e8eebe9320Fe8aDeFB2dCa5bE",
+  "tool": "Hardhat 2.29.1",
+  "compiler": {
+    "version": "0.8.24",
+    "optimizer": {
+      "enabled": true,
+      "runs": 200
+    },
+    "evmVersion": "cancun"
+  },
+  "contracts": [
+    {
+      "name": "MockNFT",
+      "address": "0xfb40fF5c177C7d6eD4Ee823e0C1dF92e171cE007",
+      "transactionHash": "0xcbf1695bb6141ea6601daa9dc6842a2af1246608dc3fbbf95d598384862d13e8",
+      "blockNumber": 12209031,
+      "gasUsed": "6526109"
+    },
+    {
+      "name": "AuctionHouse",
+      "address": "0xE798321320bf13801C1F4301b3F2CDD81F531b43",
+      "transactionHash": "0xb80b57725b67963bd3c51e3b31615106324c79c0408a4f571a10dd8cdb0b115b",
+      "blockNumber": 12209032,
+      "gasUsed": "10477874"
+    }
+  ]
+}
