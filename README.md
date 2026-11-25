@@ -161,7 +161,7 @@ npx hardhat verify --network sepolia <MockNFT address>
 | Compiler / optimizer / EVM | 0.8.24 / enabled, 200 runs / cancun |
 | Deploy tool | Hardhat 2.29.1 |
 | Etherscan (AuctionHouse) | [verified](https://sepolia.etherscan.io/address/0xE798321320bf13801C1F4301b3F2CDD81F531b43#code) |
-| Etherscan (MockNFT) | deployed, verification pending |
+| Etherscan (MockNFT) | [verified](https://sepolia.etherscan.io/address/0xfb40fF5c177C7d6eD4Ee823e0C1dF92e171cE007#code) |
 
 Machine-readable copy: [`deployments/deployment-sepolia.json`](deployments/deployment-sepolia.json).
 
