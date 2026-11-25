@@ -6,9 +6,19 @@
 //   npx hardhat run scripts/deploy.js --network sepolia
 const fs = require("node:fs");
 const path = require("node:path");
+const { execSync } = require("node:child_process");
 const hre = require("hardhat");
 
 const OUT_DIR = path.join(__dirname, "..", "deployments");
+
+// The submission has to prove that the deployed bytecode matches the submitted source.
+function gitCommit() {
+  try {
+    return execSync("git rev-parse HEAD", { encoding: "utf8" }).trim();
+  } catch {
+    return null;
+  }
+}
 
 async function describe(name, contract) {
   const receipt = await contract.deploymentTransaction().wait();
@@ -51,6 +61,7 @@ async function main() {
     network: network.name,
     chainId: Number(chainId),
     deployedAt: new Date().toISOString(),
+    gitCommit: gitCommit(),
     deployer: deployer.address,
     tool: `Hardhat ${require("hardhat/package.json").version}`,
     compiler: {
