@@ -277,8 +277,9 @@ Known limitations, stated rather than papered over:
    `bid <= deposit`. Randomising the surplus reduces the signal; a fixed-deposit variant is
    future work.
 2. **A 1-wei commitment can delay a delisting.** Once any commitment exists the seller cannot
-   cancel, so a griefer can hold the token for `commitDuration + revealDuration` at the cost of
-   locked capital (returned in the `Cancelled` path). Time-boxing the windows is the mitigation.
+   cancel, so a griefer can hold the token for `commitDuration + revealDuration`. The deposit is
+   refunded in the `Cancelled` path, so the attack costs the seller time, not money. Time-boxing
+   the windows is the mitigation.
 3. **Forced ETH breaks the strict equality** `balance == totalEscrowed` (self-destruct or
    block-reward transfers). Solvency — `balance >= totalEscrowed` — still holds, and the
    contract never pays out more than it booked.
