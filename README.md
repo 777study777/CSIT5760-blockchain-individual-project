@@ -307,9 +307,10 @@ retest log rather than a code change.
 ## 15. AI-assisted work
 
 An AI assistant was used to discuss design trade-offs, to review drafts of the proposal and
-this README, and to help edit code comments. All contract logic, tests and design decisions
-were reviewed and are understood by the author, who can explain and defend every function; the
-course policy on AI assistance applies.
+this README, and to draft the contract, the test suite, the deployment scripts and the
+documentation from the author's specification, which the author then reviewed and corrected. All
+contract logic, tests and design decisions were reviewed and are understood by the author, who can
+explain and defend every function; the course policy on AI assistance applies.
 
 ## License
 
