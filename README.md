@@ -8,6 +8,7 @@
 - **Target network:** Sepolia, chain ID 11155111
 - **Main contract:** [`contracts/AuctionHouse.sol`](contracts/AuctionHouse.sol)
 - **Proposal:** [`docs/proposal.pdf`](docs/proposal.pdf) (submitted 8 November 2026)
+- **Final report:** [`docs/report.pdf`](docs/report.pdf) (31 pages, seven chapters, appendices A–F)
 
 ## Abstract
 
@@ -26,17 +27,18 @@ time alone.
 
 ## Implementation status
 
-| Area | State |
-| --- | --- |
-| Contract implementation (`AuctionHouse`, `MockNFT`) | done |
-| Test suite (38 cases: positive, negative, boundary, duplicate) | done — `npm test` |
-| Local end-to-end demo script | done — `npm run demo` |
-| Slither analysis, manual review, remediation | in progress |
-| Sepolia deployment + Etherscan verification | pending (see [Roadmap](#roadmap)) |
-| Final report | pending |
+| Area | State | Where to look |
+| --- | --- | --- |
+| Contract implementation (`AuctionHouse`, `MockNFT`) | done | `contracts/` |
+| Test suite (positive, negative, boundary, duplicate) | done — 38 passing, 100 % line coverage | §6, `test/` |
+| Local end-to-end demo script | done — `npm run demo` closes at 0.0 ETH | `scripts/demo.js` |
+| Slither analysis, manual review, retest log | done — 29 results, none above informational in project code | [`audit/security-report.md`](audit/security-report.md) |
+| Sepolia deployment + Etherscan verification | done — both contracts verified, runtime bytecode identical to the local build | §8, [`deployments/`](deployments/) |
+| Final report | done — 31 pages, seven chapters, appendices A–F | [`docs/report.pdf`](docs/report.pdf) |
+| Screenshots of deployment, verification and test run | done | `screenshots/` |
 
-The deployed-address and Etherscan tables below are intentionally empty until the deployment
-step is executed; they are filled from the JSON record the deploy script writes, never by hand.
+Every number above is reproducible from the commands in §5–§7. The deployment table in §8 is
+filled from the JSON record the deploy script writes, not by hand.
 
 ## 1. Lifecycle
 
@@ -72,8 +74,24 @@ test/
 scripts/
   deploy.js               deploys both contracts and writes deployments/deployment-<network>.json
   demo.js                 one full auction on the local chain, printed step by step
-docs/design.md            design notes: state machine, accounting, alternatives considered
+docs/
+  design.md               design notes: state machine, accounting, alternatives considered
+  proposal.pdf            the proposal the implementation is built against
+  report.pdf              the final report, seven chapters and appendices A–F
+deployments/
+  deployment-sepolia.json the deployment record the §8 table is filled from
+audit/
+  security-report.md      Slither triage, manual checklist, residual risks, retest log
+  slither-raw.txt         raw analyser output, reproducible
+screenshots/
+  deployment.png  verification.png  tx.png  testing.png  demo.png
+.github/workflows/ci.yml  compile and run the suite on every push
 ```
+
+In the submission package the guideline's folder names are used instead: `tests/` and
+`deployment/`, the record is named `deployment-record.json`, and the report sits at the root as
+`report.pdf`. The packaged `hardhat.config.js` points `paths.tests` at `./tests` so the suite runs
+there without renaming files; the contents of every file are identical to this repository.
 
 ## 3. Requirements
 
@@ -119,7 +137,7 @@ branch coverage **81.4 %** (`AuctionHouse.sol`).
 | Creating an auction | 4 | NFT escrowed, both deadlines emitted, non-holder and zero-duration rejected, unapproved transfer reverts |
 | Commit phase | 7 | hash + deposit stored, `BidCommitted` carries no amount, seller excluded, one commit per account, exact deadline accepted and deadline + 1 s rejected, phase moves by timestamp alone |
 | Reveal phase | 7 | reveal only after the commit deadline, wrong amount/nonce and a copied hash revert with `BadCommitment`, bid above deposit rejected, zero bid and second reveal rejected, reveal-deadline boundary, below-reserve reveal recorded but cannot win |
-| Settling | 5 | early settle, settle with no winner, token and price moved atomically, permissionless settle, double settle, winner without `onERC721Received` cannot block settlement |
+| Settling | 6 | early settle, settle with no winner, token and price moved atomically, permissionless settle, double settle, winner without `onERC721Received` cannot block settlement |
 | Withdrawals and forfeits | 7 | seller proceeds, winner surplus, loser refund, double withdrawal, non-revealer blocked then forfeited to the seller, withdrawal attempts before finality, re-entrant and ETH-rejecting receivers confined |
 | Cancellation | 4 | seller delist before first commit, stranger delist rejected, empty auction returns token and refunds, settled auction cannot be cancelled |
 | Invariants and privacy | 3 | `balance == totalEscrowed` through every phase, no plaintext amount in commit-phase logs, commitments bound to bidder and auction |
@@ -134,10 +152,10 @@ npm run deploy:sepolia
 ```
 
 The script deploys `MockNFT` and `AuctionHouse`, prints both addresses, and writes
-`deployments/deployment-sepolia.json` containing the ten items the guideline asks for
-(network, chain ID, addresses, deployer, tx hashes, block numbers, compiler version, optimizer
-settings, EVM version, tool version, timestamp). Local runs write a separate file that is
-git-ignored.
+`deployments/deployment-sepolia.json` with the full deployment record: network, chain ID,
+deployer, timestamp, the git commit the build came from, compiler and optimizer settings, and
+for each contract its address, transaction hash and block number. Local runs write a separate
+file that is git-ignored.
 
 Verification must reuse the same compiler and optimizer settings, which is why they are pinned
 in `hardhat.config.js` rather than passed on the command line:
@@ -177,7 +195,7 @@ Machine-readable copy: [`deployments/deployment-sepolia.json`](deployments/deplo
 
 All auction logic — commitments, deposits, phase transitions, accounting, forfeits — is written
 for this project. `ReentrancyGuard` is the only inherited contract in `AuctionHouse`; the
-`nonReentrant` modifier is the second line of defence, not the first (see §11).
+`nonReentrant` modifier is the second line of defence, not the first (see §12).
 
 ## 10. Roles and account assumptions
 
@@ -269,15 +287,21 @@ Known limitations, stated rather than papered over:
 5. **Out of scope:** proxies/upgrades, ERC-20 payment, allow-lists or KYC, other auction
    formats, on-chain randomness, a web front-end, cross-chain settlement.
 
-## 14. Roadmap
+## 14. Delivered evidence
 
-| Step | Deliverable |
-| --- | --- |
-| Static analysis | Slither output, manual checklist, `audit/security-report.md` |
-| Remediation | fixes + regression tests for each finding |
-| Deployment | Sepolia addresses, tx hashes, §8 table filled |
-| Verification | Etherscan links, screenshots |
-| Documentation | final report, packaging |
+| Step | Artefact | Where |
+| --- | --- | --- |
+| Static analysis | Slither 0.11.6, 102 detectors, 21 contracts, 29 results | [`audit/slither-raw.txt`](audit/slither-raw.txt) |
+| Interpretation | severity, affected code, control and retest id for every result | [`audit/security-report.md`](audit/security-report.md), §13 |
+| Deployment | Sepolia addresses, tx hashes, block numbers, git commit | §8, [`deployments/deployment-sepolia.json`](deployments/deployment-sepolia.json) |
+| Verification | both contracts published on Etherscan; runtime bytecode compared to the local build | §8, [`screenshots/verification.png`](screenshots/verification.png) |
+| Documentation | report, screenshots, submission package | [`docs/report.pdf`](docs/report.pdf), `screenshots/` |
+
+No remediation patch was required. No result in project code is a defect: the uninitialised local
+is a false positive, the timestamp comparisons are the product requirement, the single low-level
+call is a guarded pull payment, and the remaining twenty results sit inside OpenZeppelin.
+"Remediation" therefore takes the form of a regression test that pins each claim, recorded in the
+retest log rather than a code change.
 
 ## 15. AI-assisted work
 
